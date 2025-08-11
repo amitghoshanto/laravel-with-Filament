@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Posts\Schemas;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Database\Eloquent\Model;
 
 class PostForm
 {
@@ -21,7 +22,7 @@ class PostForm
                     ->deletable()
                     ->panelLayout('grid')
                     ->disk('public')
-                    ->directory('posts')
+                    ->directory(fn ($operation, ?Model $record) => $operation === 'create' ? 'posts' : "posts/{$record->id}")
                     ->columnSpanFull()
                     ->reorderable(),
             ]);
